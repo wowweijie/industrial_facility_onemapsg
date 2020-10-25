@@ -1,0 +1,170 @@
+			<html>
+				<head>
+					<title>OneMap2 XYZ (Default)</title>
+					<link rel="stylesheet" href="../onemap-leaflet.css" />
+					<script src="../onemap-leaflet.js"></script>
+					<script src="../planning_data.js"></script>
+					<script src="../color.js"></script>
+					<script src="../routes.js"></script>
+					<script src="../Polyline.encoded.js"></script>
+				</head>
+				<body>
+					<h1>Redmart Potential</h1>
+						<!--Creates a Div for Map-->
+						<div id='map' style='height:800px;'></div>
+				</body>
+				<script>
+					//Initialize token
+					var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjY1NjMsInVzZXJfaWQiOjY1NjMsImVtYWlsIjoid2VpZ2h6aGllQGdtYWlsLmNvbSIsImZvcmV2ZXIiOmZhbHNlLCJpc3MiOiJodHRwOlwvXC9vbTIuZGZlLm9uZW1hcC5zZ1wvYXBpXC92MlwvdXNlclwvc2Vzc2lvbiIsImlhdCI6MTYwMzM1NzUwOCwiZXhwIjoxNjAzNzg5NTA4LCJuYmYiOjE2MDMzNTc1MDgsImp0aSI6ImQyYmM4MTU3OTczYTdjMGY4YzNhYTEwNDRhN2VkZmZkIn0.IJWn6STh9aOGELN72iAqeBCHhbhj7ES_GjhTqPdOrxI";
+					//Initialize OneMap and select one style
+					//The parameters are Div name,Map style(default,night grey,original),Zoom, Latitude, Longitude and Opacity
+					var map = onemap.initializeMap('map',"default",11,1.3,103.8,0.8);
+
+					//Add Layer at the back
+					var backLayer = onemap.addBackLayer(map,L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+						            			detectRetina: true,
+												attribution: '© OpenStreetMap contributors',
+												maxZoom: 18,
+						            			minZoom: 0,
+						            			opacity:1
+											}));
+
+					//Add Layer at the front
+					var frontLayer = onemap.addFrontLayer(map,L.tileLayer("https://maps-{s}.onemap.sg/v3/{z}/{x}/{y}.png", {
+						            			detectRetina: true,
+												attribution: '© OneMap',
+												maxZoom: 18,
+						            			minZoom: 0,
+						            			opacity:0.5
+											}));
+
+					//Layer to be removed later
+					var removeLayer = onemap.addFrontLayer(map,L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+						            			detectRetina: true,
+												attribution: '© OpenStreetMap contributors',
+												maxZoom: 18,
+						            			minZoom: 0,
+						            			opacity:1
+											}));
+					//Removed Layer from Map
+					onemap.removeLayer(map,removeLayer);
+
+					//Setup configuration for REST API Services (Your Access Token)
+					//Our Documentation @  https://docs.onemap.sg
+					onemap.config(token);
+
+					console.log(planning_areas);
+
+					for(var i=0;i<planning_areas.length;i++){
+						const area = planning_areas[i];
+						let Http = new XMLHttpRequest();
+						const year = '2020';
+						const planningArea = area.pln_area_n;
+						const url = `https://developers.onemap.sg/privateapi/popapi/getHouseholdSize?token=${token}&planningArea=${planningArea}&year=${year}`
+						L.geoJSON(JSON.parse(area.geojson), {style: {
+							opacity : 0.95,
+							color : colors[i],
+							stroke : true,
+							weight : 1
+						}}).addTo(map);
+						console.log(area.pln_area_n);
+						var _icon = L.icon({
+									    iconUrl: '../images/red-icon.png'
+									});
+
+						const latlng = area.LatLng.split(",");
+
+						Http.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								const receivemsg = Http.responseText;
+								const areaObj = JSON.parse(receivemsg)[0];
+								console.log(areaObj);
+								const marker = L.marker([latlng[0].trim(), latlng[1].trim()]).bindPopup(
+									'<h2>'+area.pln_area_n+'</h2><p>Facility Location : '+area.facility_name+'</p>'+
+									'<p># Households in Area : '+[areaObj.person1,areaObj.person2,areaObj.person3,
+															areaObj.person4,areaObj.person5,areaObj.person6,
+															areaObj.person7,areaObj.person_more_8].reduce((a,b)=>{
+																//a = Number(a)!=NaN? Number(a) : 0;
+																//b = Number(b)!=NaN? Number(b) : 0;
+																return Number(a)+Number(b);
+															}, 0)+'</p>'
+								).addTo(map);
+								
+							}
+						}
+						Http.open("GET", url, true);
+						Http.send(null);
+
+						
+					}
+					
+					
+					//Call Theme Services
+					var themeObj = onemap.retrieveTheme("kindergartens");
+
+					console.log(themeObj);
+
+	    			//Convert Themes that are Points into GeoJSON for overlaying
+	    			var data = onemap.pointTheme2GeoJSON(themeObj);
+
+					console.log(themeObj);
+
+	    			//Add GeoJSON to map
+		    		var geojson = L.geoJSON(data, {onEachFeature: function (feature, layer) {layer.bindPopup('<h1>'+feature.properties.NAME+'</h1><p>Description: '+feature.properties.DESCRIPTION+'</p>');
+		    			//Sets Icon information
+						var icon = L.icon({
+									    iconUrl: feature.properties.ICON
+									});
+						layer.setIcon(icon)
+					}});
+
+					
+					const routeType = 'drive'
+
+					routes.forEach(path => {
+
+						let Http = new XMLHttpRequest();
+
+						
+						const startArea = planning_areas.find(area => {
+							return area.pln_area_n == path.start
+						});
+
+						const endArea = planning_areas.find(area => {
+							return area.pln_area_n == path.end
+						});
+
+						console.log(startArea);
+						const start = startArea.LatLng.replace(/\s/g, '');
+						const end = endArea.LatLng.replace(/\s/g, '');
+					
+
+						const url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${start}&end=${end}&routeType=${routeType}&token=${token}`;
+						Http.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								const receivemsg = Http.responseText;
+								const routeObject = JSON.parse(receivemsg);
+								const latlngs = PolylineUtil.decode(routeObject.route_geometry, {precision: 5});
+								console.log(routeObject);
+								
+								const polyline = L.polyline(latlngs, {color: 'blue', 
+																	stroke : true, 
+																	weight : 4}).bindPopup('<h2>'+path.start+' | '+path.end+'</h2>'+
+																							'<p>Distance : '+routeObject.route_summary.total_distance+'</p>').addTo(map);
+								
+							}
+						}
+						Http.open("GET", url, true);
+						Http.send(null);
+
+					});
+
+					
+					//geojson.addTo(map);
+
+					//Fit bound to markers
+					map.fitBounds(geojson.getBounds());
+
+				</script>
+
+			</html>

@@ -1,0 +1,227 @@
+import json
+json_string = """{ 
+    "areas" : [
+    {
+        "id": 2,
+        "pln_area_n": "ANG MO KIO"
+    },
+    {
+        "id": 3,
+        "pln_area_n": "BEDOK"
+    },
+    {
+        "id": 4,
+        "pln_area_n": "BISHAN"
+    },
+    {
+        "id": 5,
+        "pln_area_n": "BOON LAY"
+    },
+    {
+        "id": 6,
+        "pln_area_n": "BUKIT BATOK"
+    },
+    {
+        "id": 7,
+        "pln_area_n": "BUKIT MERAH"
+    },
+    {
+        "id": 15,
+        "pln_area_n": "CHOA CHU KANG"
+    },
+    {
+        "id": 8,
+        "pln_area_n": "BUKIT PANJANG"
+    },
+    {
+        "id": 9,
+        "pln_area_n": "JURONG EAST"
+    },
+    {
+        "id": 21,
+        "pln_area_n": "QUEENSTOWN"
+    },
+    {
+        "id": 10,
+        "pln_area_n": "JURONG WEST"
+    },
+    {
+        "id": 11,
+        "pln_area_n": "BUKIT TIMAH"
+    },
+    {
+        "id": 12,
+        "pln_area_n": "CENTRAL WATER CATCHMENT"
+    },
+    {
+        "id": 13,
+        "pln_area_n": "CHANGI"
+    },
+    {
+        "id": 14,
+        "pln_area_n": "CHANGI BAY"
+    },
+    {
+        "id": 31,
+        "pln_area_n": "TENGAH"
+    },
+    {
+        "id": 16,
+        "pln_area_n": "CLEMENTI"
+    },
+    {
+        "id": 17,
+        "pln_area_n": "GEYLANG"
+    },
+    {
+        "id": 18,
+        "pln_area_n": "HOUGANG"
+    },
+    {
+        "id": 19,
+        "pln_area_n": "PIONEER"
+    },
+    {
+        "id": 20,
+        "pln_area_n": "PUNGGOL"
+    },
+    {
+        "id": 22,
+        "pln_area_n": "SELETAR"
+    },
+    {
+        "id": 23,
+        "pln_area_n": "SEMBAWANG"
+    },
+    {
+        "id": 24,
+        "pln_area_n": "SENGKANG"
+    },
+    {
+        "id": 25,
+        "pln_area_n": "SERANGOON"
+    },
+    {
+        "id": 26,
+        "pln_area_n": "SIMPANG"
+    },
+    {
+        "id": 27,
+        "pln_area_n": "SOUTHERN ISLANDS"
+    },
+    {
+        "id": 28,
+        "pln_area_n": "SUNGEI KADUT"
+    },
+    {
+        "id": 29,
+        "pln_area_n": "TAMPINES"
+    },
+    {
+        "id": 30,
+        "pln_area_n": "TANGLIN"
+    },
+    {
+        "id": 32,
+        "pln_area_n": "TOA PAYOH"
+    },
+    {
+        "id": 33,
+        "pln_area_n": "TUAS"
+    },
+    {
+        "id": 34,
+        "pln_area_n": "WESTERN ISLANDS"
+    },
+    {
+        "id": 35,
+        "pln_area_n": "WESTERN WATER CATCHMENT"
+    },
+    {
+        "id": 36,
+        "pln_area_n": "WOODLANDS"
+    },
+    {
+        "id": 37,
+        "pln_area_n": "YISHUN"
+    },
+    {
+        "id": 38,
+        "pln_area_n": "DOWNTOWN CORE"
+    },
+    {
+        "id": 39,
+        "pln_area_n": "MARINA EAST"
+    },
+    {
+        "id": 40,
+        "pln_area_n": "MARINA SOUTH"
+    },
+    {
+        "id": 41,
+        "pln_area_n": "MUSEUM"
+    },
+    {
+        "id": 42,
+        "pln_area_n": "NEWTON"
+    },
+    {
+        "id": 43,
+        "pln_area_n": "ORCHARD"
+    },
+    {
+        "id": 44,
+        "pln_area_n": "OUTRAM"
+    },
+    {
+        "id": 45,
+        "pln_area_n": "KALLANG"
+    },
+    {
+        "id": 46,
+        "pln_area_n": "LIM CHU KANG"
+    },
+    {
+        "id": 47,
+        "pln_area_n": "MANDAI"
+    },
+    {
+        "id": 48,
+        "pln_area_n": "MARINE PARADE"
+    },
+    {
+        "id": 49,
+        "pln_area_n": "NORTH-EASTERN ISLANDS"
+    },
+    {
+        "id": 50,
+        "pln_area_n": "NOVENA"
+    },
+    {
+        "id": 51,
+        "pln_area_n": "PASIR RIS"
+    },
+    {
+        "id": 52,
+        "pln_area_n": "PAYA LEBAR"
+    },
+    {
+        "id": 53,
+        "pln_area_n": "RIVER VALLEY"
+    },
+    {
+        "id": 54,
+        "pln_area_n": "ROCHOR"
+    },
+    {
+        "id": 55,
+        "pln_area_n": "SINGAPORE RIVER"
+    },
+    {
+        "id": 56,
+        "pln_area_n": "STRAITS VIEW"
+    }
+]
+}"""
+
+python_object = json.loads(json_string)

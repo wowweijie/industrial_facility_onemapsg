@@ -1,0 +1,27 @@
+{
+    "name": "package",
+    "version": "1.0.0",
+    "description": "In order to make New OneMap interactive and data-driven, OneMap-Leaflet JS is born. We invite you to give suggestions to evolve Project OneMap-Leaflet JS.",
+    "main": "onemap-leaflet.js",
+    "directories": {
+        "example": "examples"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sla-onemap/onemap-leaflet.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/sla-onemap/onemap-leaflet/issues"
+    },
+    "homepage": "https://github.com/sla-onemap/onemap-leaflet#readme",
+    "dependencies": {
+        "lodash": "^4.17.20",
+        "polyline-encoded": "0.0.9",
+        "xmlhttprequest": "^1.8.0"
+    }
+}
